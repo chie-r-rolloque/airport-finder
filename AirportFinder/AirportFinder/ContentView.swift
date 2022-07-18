@@ -8,10 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
+    @ObservedObject var viewModel = AirportViewModel()
+        
+        var body: some View {
+            NavigationView {
+                ZStack {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(viewModel.airports ?? [Airport](), id: \.self) { value in
+                                NavigationLink(destination: AirportDetailView(model: value)) {
+                                                                AirportCellView(airport: value)
+                                                                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                                                            }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 }
 
 struct ContentView_Previews: PreviewProvider {
